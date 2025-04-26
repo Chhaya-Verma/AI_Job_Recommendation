@@ -15,7 +15,7 @@ function Login() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate("/"); // After login, redirect to home
+      navigate("/home"); // After login, redirect to home
     } catch (err: any) {
       setError(err.message);
     }
