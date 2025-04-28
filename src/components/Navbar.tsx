@@ -1,16 +1,32 @@
 // src/components/Navbar.tsx
-
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { auth } from "../firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import ProfileImage from './Profile'; // Import ProfileImage component
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [username, setUsername] = useState<string>("");
+
+  useEffect(() => {
+    // Firebase authentication state listener to get the user info
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUsername(user.displayName || "Guest"); // Fetch username from Firebase
+      } else {
+        setUsername("Guest"); // If no user is logged in, show 'Guest'
+      }
+    });
+
+    // Cleanup listener on component unmount
+    return () => unsubscribe();
+  }, []);
 
   return (
     <nav className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="text-2xl font-bold text-green-600">
@@ -24,6 +40,11 @@ function Navbar() {
             <Link to="/find-jobs" className="text-gray-700 hover:text-green-600 font-medium">Find Jobs</Link>
             <Link to="/saved-jobs" className="text-gray-700 hover:text-green-600 font-medium">Saved Jobs</Link>
             <Link to="/profile" className="text-gray-700 hover:text-green-600 font-medium">Profile</Link>
+
+            {/* Display dynamic Profile Image */}
+            <div className="ml-4">
+              <ProfileImage username={username} />
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
