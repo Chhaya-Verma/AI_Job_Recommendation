@@ -33,7 +33,9 @@ export async function fetchJobs(query: string) {
         job_min_salary: job.job_min_salary,
         job_max_salary: job.job_max_salary,
         job_salary_currency: job.job_salary_currency,
+        job_posted_at: job.job_posted_at_datetime_utc, // 🆕 Date Posted
       }));
+      
     } catch (error) {
       console.error(error);
       return [];

@@ -15,6 +15,7 @@ interface Job {
   job_min_salary?: number;
   job_max_salary?: number;
   job_salary_currency?: string;
+  job_posted_at?: string;
 }
 
 function Recommendation() {
@@ -33,15 +34,21 @@ function Recommendation() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold mb-4 text-center text-blue-600">Job Recommendations</h1>
+      <h1 className="text-3xl font-bold mb-4 text-center text-blue-600">
+        Job Recommendations
+      </h1>
 
       <JobSearchForm onSearch={setQuery} />
 
       <div className="grid gap-4 mt-6">
-        {loading && <p className="text-gray-500 text-center">Loading jobs...</p>}
+        {loading && (
+          <p className="text-gray-500 text-center">Loading jobs...</p>
+        )}
 
         {!loading && jobs.length === 0 && (
-          <p className="text-gray-500 text-center">No jobs found. Try another search.</p>
+          <p className="text-gray-500 text-center">
+            No jobs found. Try another search.
+          </p>
         )}
 
         {!loading &&
@@ -63,15 +70,28 @@ function Recommendation() {
                 </div>
               </div>
 
-              <p className="text-sm text-gray-700 mb-2">
-                <strong>Type:</strong> {job.job_type || "N/A"} |{" "}
+              <p className="text-sm text-gray-700 mb-1">
+                🧾 <strong>Type:</strong> {job.job_type || "N/A"} | 🏡{" "}
                 <strong>Remote:</strong> {job.job_is_remote ? "Yes" : "No"}
               </p>
 
               {job.job_min_salary && (
-                <p className="text-sm text-green-600 mb-2">
-                  Salary: {job.job_salary_currency} {job.job_min_salary} -{" "}
-                  {job.job_max_salary}
+                <p className="text-sm text-green-600 mb-1">
+                  💰 <strong>Salary:</strong> {job.job_salary_currency}{" "}
+                  {job.job_min_salary} – {job.job_max_salary}
+                </p>
+              )}
+
+              {job.job_posted_at && (
+                <p className="text-sm text-gray-500 mb-1">
+                  📅 <strong>Posted:</strong>{" "}
+                  {new Date(job.job_posted_at).toLocaleDateString()}
+                </p>
+              )}
+
+              {job.job_description && (
+                <p className="text-sm text-gray-600 line-clamp-2 mb-2">
+                  📄 {job.job_description.slice(0, 150)}...
                 </p>
               )}
 
