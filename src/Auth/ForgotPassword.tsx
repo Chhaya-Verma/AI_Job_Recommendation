@@ -29,7 +29,7 @@ function ForgotPassword() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <form onSubmit={handleResetPassword} className="bg-white p-8 rounded shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">Reset Password</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center text-[#6D2764]">Reset Password</h2>
 
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         {success && <p className="text-green-500 text-sm mb-4">{success}</p>}
@@ -39,20 +39,20 @@ function ForgotPassword() {
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-2 mb-4 border rounded"
+          className="w-full p-2 mb-4 border border-[#6D2764] rounded"
           required
         />
 
         <button
           type="submit"
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded"
+          className="w-full bg-[#6D2764] hover:bg-blue-600 text-white py-2 rounded"
         >
           Reset Password
         </button>
 
         <p className="text-sm text-center mt-4">
           Remembered your password?{" "}
-          <a href="/login" className="text-blue-500 hover:underline">
+          <a href="/login" className="text-[#6D2764] hover:underline">
             Login
           </a>
         </p>
