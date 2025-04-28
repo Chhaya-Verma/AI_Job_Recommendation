@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -16,9 +16,14 @@ function Register() {
 
     try {
       // Firebase registration
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Set displayName (username) after user registration
+      await updateProfile(user, { displayName: username });
+
       // After successful registration, redirect to login page
-      navigate("/login"); 
+      navigate("/login");
     } catch (err: any) {
       setError(err.message); // Set error message on failure
     }
@@ -77,4 +82,3 @@ function Register() {
 }
 
 export default Register;
-
