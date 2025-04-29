@@ -38,3 +38,14 @@ export function JobSearchForm({ onSearch }: Props) {
     </form>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
