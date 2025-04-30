@@ -4,6 +4,7 @@ import Register from "./Auth/Register";
 import Home from "./pages/Home";
 import Recommendation from "./pages/Recommendations";
 import ForgotPassword from "./Auth/ForgotPassword";
+import SavedJobs from "./pages/SavedJobs";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="home" element={<Home/>} />
         <Route path="/find-jobs" element={<Recommendation />} />
+        <Route path="/saved-jobs" element={<SavedJobs />} />
       </Routes>
     </Router>
   );
