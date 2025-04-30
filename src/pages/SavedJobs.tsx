@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
+import Navbar from "../components/Navbar";
 
 interface Job {
   id: string;
@@ -57,6 +58,8 @@ function SavedJobs() {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="min-h-screen bg-gray-100 p-6">
       <h1 className="text-3xl font-bold text-center text-[#6D2764] mb-6">Saved Jobs</h1>
 
@@ -91,6 +94,7 @@ function SavedJobs() {
         </div>
       )}
     </div>
+    </>
   );
 }
 
