@@ -1,4 +1,4 @@
-
+/////////////////////// for the firestone ////////////////////
 import { useEffect, useState } from "react";
 import { JobSearchForm } from "../components/JobSearchForm";
 import Navbar from "../components/Navbar";
@@ -12,31 +12,43 @@ interface Job {
   employer_name: string;
   employer_logo?: string;
   job_city: string;
+  job_state?: string;
+  job_country?: string;
+  job_location?: string;
   job_apply_link: string;
   job_type?: string;
+  job_types?: string[];
   job_description?: string;
   job_is_remote?: boolean;
   job_min_salary?: number;
   job_max_salary?: number;
   job_salary_currency?: string;
   job_posted_at?: string;
+  salary?: string;
+  qualifications?: string;
+  experience?: string;
+  skills?: string[];
 }
 
 function Recommendation() {
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   useEffect(() => {
     if (!query) return;
 
     setLoading(true);
     fetchJobs(query)
-      .then(setJobs)
+      .then((data) => {
+        setJobs(data);
+        if (data.length > 0) setSelectedJob(data[0]);
+      })
       .finally(() => setLoading(false));
   }, [query]);
 
-  // This is the correct "Save Job" function
   const handleSaveJob = async (job: Job) => {
     const user = auth.currentUser;
     if (!user) {
@@ -46,18 +58,7 @@ function Recommendation() {
 
     try {
       await setDoc(doc(db, "users", user.uid, "savedJobs", job.job_id), {
-        job_title: job.job_title,
-        employer_name: job.employer_name,
-        employer_logo: job.employer_logo || "",
-        job_city: job.job_city,
-        job_apply_link: job.job_apply_link,
-        job_type: job.job_type || "",
-        job_description: job.job_description || "",
-        job_is_remote: job.job_is_remote || false,
-        job_min_salary: job.job_min_salary || null,
-        job_max_salary: job.job_max_salary || null,
-        job_salary_currency: job.job_salary_currency || "",
-        job_posted_at: job.job_posted_at || "",
+        ...job
       });
       alert("Job saved successfully!");
     } catch (error) {
@@ -68,94 +69,122 @@ function Recommendation() {
 
   return (
     <>
-    <Navbar />
-    <div className="min-h-screen bg-gray-100 p-6">
-  
-      <h1 className="text-3xl font-bold mb-4 text-center text-blue-600">
-        Job Recommendations
-      </h1>
+      <Navbar />
+      <div className="min-h-screen bg-gray-100 p-6">
+        <h1 className="text-3xl font-bold mb-4 text-center text-blue-600">
+          Job Recommendations
+        </h1>
 
-      <JobSearchForm onSearch={setQuery} />
+        <JobSearchForm onSearch={setQuery} />
 
-      <div className="grid gap-4 mt-6">
-        {loading && (
-          <p className="text-gray-500 text-center">Loading jobs...</p>
-        )}
+        {loading && <p className="text-center text-gray-500 mt-4">Loading jobs...</p>}
 
         {!loading && jobs.length === 0 && (
-          <p className="text-gray-500 text-center">
-            No jobs found. Try another search.
-          </p>
+          <p className="text-center text-gray-500 mt-4">No jobs found. Try another search.</p>
         )}
 
-        {!loading &&
-          jobs.map((job) => (
-            <div key={job.job_id} className="bg-white p-4 rounded shadow">
-              <div className="flex items-center gap-4 mb-2">
-                {job.employer_logo && (
-                  <img
-                    src={job.employer_logo}
-                    alt="Logo"
-                    className="w-12 h-12 object-contain"
-                  />
-                )}
-                <div>
-                  <h2 className="text-xl font-semibold">{job.job_title}</h2>
-                  <p className="text-gray-600">
-                    {job.employer_name} – {job.job_city}
-                  </p>
-                </div>
-              </div>
+        {!loading && jobs.length > 0 && (
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Left side: Detailed Job View */}
+            <div className="md:col-span-2 bg-white p-4 rounded shadow">
+              {selectedJob && (
+                <>
+                  <div className="flex items-center gap-4 mb-4">
+                    {selectedJob.employer_logo && (
+                      <img
+                        src={selectedJob.employer_logo}
+                        alt="Logo"
+                        className="w-16 h-16 object-contain"
+                      />
+                    )}
+                    <div>
+                      <h2 className="text-2xl font-semibold">{selectedJob.job_title}</h2>
+                      <p className="text-gray-600">{selectedJob.employer_name} – {selectedJob.job_city}, {selectedJob.job_state}, {selectedJob.job_country}</p>
+                    </div>
+                  </div>
 
-              {/* Job details */}
-              {job.job_type && (
-                <p className="text-sm text-gray-700 mb-1">
-                  🧾 <strong>Type:</strong> {job.job_type}
-                </p>
-              )}
-              {job.job_is_remote !== undefined && (
-                <p className="text-sm text-gray-700 mb-1">
-                  🏡 <strong>Remote:</strong> {job.job_is_remote ? "Yes" : "No"}
-                </p>
-              )}
-              {job.job_posted_at && (
-                <p className="text-sm text-gray-500 mb-1">
-                  📅 <strong>Posted:</strong>{" "}
-                  {new Date(job.job_posted_at).toLocaleDateString()}
-                </p>
-              )}
-              {job.job_description && (
-                <p className="text-sm text-gray-600 line-clamp-2 mb-2">
-                  📄 {job.job_description.slice(0, 150)}...
-                </p>
-              )}
+                  <p className="text-sm text-gray-700 mb-1">🧾 <strong>Type:</strong> {selectedJob.job_type}</p>
+                  <p className="text-sm text-gray-700 mb-1">🏡 <strong>Remote:</strong> {selectedJob.job_is_remote ? "Yes" : "No"}</p>
+                  <p className="text-sm text-gray-700 mb-1">🌍 <strong>Location:</strong> {selectedJob.job_location}</p>
+                  {selectedJob.job_posted_at && (
+                    <p className="text-sm text-gray-500 mb-1">📅 <strong>Posted:</strong> {new Date(selectedJob.job_posted_at).toLocaleDateString()}</p>
+                  )}
 
-              <div className="flex gap-2">
-                <a
-                  href={job.job_apply_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline mt-2 block"
-                >
-                  Apply Now
-                </a>
+                  {selectedJob.salary && <p className="text-sm text-gray-700 mb-1">💰 <strong>Salary:</strong> {selectedJob.salary}</p>}
+                  {selectedJob.qualifications && <p className="text-sm text-gray-700 mb-1">🎓 <strong>Qualifications:</strong> {selectedJob.qualifications}</p>}
+                  {selectedJob.experience && <p className="text-sm text-gray-700 mb-1">🏢 <strong>Experience:</strong> {selectedJob.experience}</p>}
+                  {selectedJob.skills?.length && <p className="text-sm text-gray-700 mb-1">🛠 <strong>Skills:</strong> {selectedJob.skills.join(", ")}</p>}
 
-                <button
-                  onClick={() => handleSaveJob(job)}
-                  className="text-white bg-green-600 hover:bg-green-700 px-3 py-1 rounded mt-2"
-                >
-                  Save Job
-                </button>
-              </div>
+                  {selectedJob.job_description && (
+                    <>
+                      <p className="text-gray-800 mt-4 whitespace-pre-wrap">
+                        {showFullDescription
+                          ? selectedJob.job_description
+                          : `${selectedJob.job_description.slice(0, 500)}...`}
+                      </p>
+                      {selectedJob.job_description.length > 500 && (
+                        <button
+                          className="text-blue-600 mt-2 hover:underline"
+                          onClick={() => setShowFullDescription(!showFullDescription)}
+                        >
+                          {showFullDescription ? "Read Less" : "Read More"}
+                        </button>
+                      )}
+                    </>
+                  )}
+
+                  <div className="flex gap-2 mt-4">
+                    <a
+                      href={selectedJob.job_apply_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:underline"
+                    >
+                      Apply Now
+                    </a>
+
+                    <button
+                      onClick={() => handleSaveJob(selectedJob)}
+                      className="text-white bg-green-600 hover:bg-green-700 px-3 py-1 rounded"
+                    >
+                      Save Job
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
-          ))}
+
+            {/* Right side: Job Cards */}
+            <div className="flex flex-col gap-4 overflow-auto max-h-[80vh]">
+              {jobs.map((job) => (
+                <div
+                  key={job.job_id}
+                  className={`bg-white p-3 rounded shadow cursor-pointer hover:bg-blue-50 ${job.job_id === selectedJob?.job_id ? "border border-blue-500" : ""}`}
+                  onClick={() => {
+                    setSelectedJob(job);
+                    setShowFullDescription(false);
+                  }}
+                >
+                  <h3 className="text-lg font-medium">{job.job_title}</h3>
+                  <p className="text-sm text-gray-600">{job.employer_name} – {job.job_city}</p>
+                  {job.job_description && <p className="text-sm text-gray-500 line-clamp-2 mt-1">{job.job_description.slice(0, 100)}...</p>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
-    </div>
     </>
   );
 }
 
 export default Recommendation;
+
+
+
+
+
+
 
 
 
