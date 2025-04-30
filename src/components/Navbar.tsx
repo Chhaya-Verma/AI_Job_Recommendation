@@ -24,22 +24,22 @@ function Navbar() {
   }, []);
 
   return (
-    <nav className="bg-white shadow-md">
+    <nav className="bg-[#6D2764] shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/" className="text-2xl font-bold text-green-600">
+            <Link to="/" className="text-2xl font-bold text-white">
               AI Jobs
             </Link>
           </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8">
-            <Link to="/" className="text-gray-700 hover:text-green-600 font-medium">Home</Link>
-            <Link to="/find-jobs" className="text-gray-700 hover:text-green-600 font-medium">Find Jobs</Link>
-            <Link to="/saved-jobs" className="text-gray-700 hover:text-green-600 font-medium">Saved Jobs</Link>
-            <Link to="/profile" className="text-gray-700 hover:text-green-600 font-medium">Profile</Link>
+            <Link to="/home" className="text-white hover:text-green-600 font-medium">Home</Link>
+            <Link to="/find-jobs" className="text-white hover:text-green-600 font-medium">Find Jobs</Link>
+            <Link to="/saved-jobs" className="text-white hover:text-green-600 font-medium">Saved Jobs</Link>
+            <Link to="/profile" className="text-white  hover:text-green-600 font-medium">Profile</Link>
 
             {/* Display dynamic Profile Image */}
             <div className="ml-4">
