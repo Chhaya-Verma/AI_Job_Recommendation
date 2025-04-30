@@ -58,7 +58,7 @@ function Recommendation() {
 
     try {
       await setDoc(doc(db, "users", user.uid, "savedJobs", job.job_id), {
-        ...job
+        ...job,
       });
       alert("Job saved successfully!");
     } catch (error) {
@@ -77,10 +77,14 @@ function Recommendation() {
 
         <JobSearchForm onSearch={setQuery} />
 
-        {loading && <p className="text-center text-gray-500 mt-4">Loading jobs...</p>}
+        {loading && (
+          <p className="text-center text-gray-500 mt-4">Loading jobs...</p>
+        )}
 
         {!loading && jobs.length === 0 && (
-          <p className="text-center text-gray-500 mt-4">No jobs found. Try another search.</p>
+          <p className="text-center text-gray-500 mt-4">
+            No jobs found. Try another search.
+          </p>
         )}
 
         {!loading && jobs.length > 0 && (
@@ -98,22 +102,65 @@ function Recommendation() {
                       />
                     )}
                     <div>
-                      <h2 className="text-2xl font-semibold">{selectedJob.job_title}</h2>
-                      <p className="text-gray-600">{selectedJob.employer_name} – {selectedJob.job_city}, {selectedJob.job_state}, {selectedJob.job_country}</p>
+                      <h2 className="text-2xl font-semibold">
+                        {selectedJob.job_title}
+                      </h2>
+                      <p className="text-gray-600">
+                        {selectedJob.employer_name} – {selectedJob.job_city},{" "}
+                        {selectedJob.job_state}, {selectedJob.job_country}
+                      </p>
                     </div>
                   </div>
 
-                  <p className="text-sm text-gray-700 mb-1">🧾 <strong>Type:</strong> {selectedJob.job_type}</p>
-                  <p className="text-sm text-gray-700 mb-1">🏡 <strong>Remote:</strong> {selectedJob.job_is_remote ? "Yes" : "No"}</p>
-                  <p className="text-sm text-gray-700 mb-1">🌍 <strong>Location:</strong> {selectedJob.job_location}</p>
+                  <p className="text-sm text-gray-700 mb-1">
+                    🧾 <strong>Type:</strong> {selectedJob.job_type}
+                  </p>
+                  <p className="text-sm text-gray-700 mb-1">
+                    🏡 <strong>Remote:</strong>{" "}
+                    {selectedJob.job_is_remote ? "Yes" : "No"}
+                  </p>
+                  <p className="text-sm text-gray-700 mb-1">
+                    📍 <strong>Location:</strong>{" "}
+                    <a
+                      href={`https://www.google.com/maps/search/${encodeURIComponent(
+                        selectedJob.job_location || ""
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      {selectedJob.job_location || "N/A"}
+                    </a>
+                  </p>
+
                   {selectedJob.job_posted_at && (
-                    <p className="text-sm text-gray-500 mb-1">📅 <strong>Posted:</strong> {new Date(selectedJob.job_posted_at).toLocaleDateString()}</p>
+                    <p className="text-sm text-gray-500 mb-1">
+                      📅 <strong>Posted:</strong>{" "}
+                      {new Date(selectedJob.job_posted_at).toLocaleDateString()}
+                    </p>
                   )}
 
-                  {selectedJob.salary && <p className="text-sm text-gray-700 mb-1">💰 <strong>Salary:</strong> {selectedJob.salary}</p>}
-                  {selectedJob.qualifications && <p className="text-sm text-gray-700 mb-1">🎓 <strong>Qualifications:</strong> {selectedJob.qualifications}</p>}
-                  {selectedJob.experience && <p className="text-sm text-gray-700 mb-1">🏢 <strong>Experience:</strong> {selectedJob.experience}</p>}
-                  {selectedJob.skills?.length && <p className="text-sm text-gray-700 mb-1">🛠 <strong>Skills:</strong> {selectedJob.skills.join(", ")}</p>}
+                  {selectedJob.salary && (
+                    <p className="text-sm text-gray-700 mb-1">
+                      💰 <strong>Salary:</strong> {selectedJob.salary}
+                    </p>
+                  )}
+                  {selectedJob.qualifications && (
+                    <p className="text-sm text-gray-700 mb-1">
+                      🎓 <strong>Qualifications:</strong>{" "}
+                      {selectedJob.qualifications}
+                    </p>
+                  )}
+                  {selectedJob.experience && (
+                    <p className="text-sm text-gray-700 mb-1">
+                      🏢 <strong>Experience:</strong> {selectedJob.experience}
+                    </p>
+                  )}
+                  {selectedJob.skills?.length && (
+                    <p className="text-sm text-gray-700 mb-1">
+                      🛠 <strong>Skills:</strong> {selectedJob.skills.join(", ")}
+                    </p>
+                  )}
 
                   {selectedJob.job_description && (
                     <>
@@ -125,7 +172,9 @@ function Recommendation() {
                       {selectedJob.job_description.length > 500 && (
                         <button
                           className="text-blue-600 mt-2 hover:underline"
-                          onClick={() => setShowFullDescription(!showFullDescription)}
+                          onClick={() =>
+                            setShowFullDescription(!showFullDescription)
+                          }
                         >
                           {showFullDescription ? "Read Less" : "Read More"}
                         </button>
@@ -159,15 +208,25 @@ function Recommendation() {
               {jobs.map((job) => (
                 <div
                   key={job.job_id}
-                  className={`bg-white p-3 rounded shadow cursor-pointer hover:bg-blue-50 ${job.job_id === selectedJob?.job_id ? "border border-blue-500" : ""}`}
+                  className={`bg-white p-3 rounded shadow cursor-pointer hover:bg-blue-50 ${
+                    job.job_id === selectedJob?.job_id
+                      ? "border border-blue-500"
+                      : ""
+                  }`}
                   onClick={() => {
                     setSelectedJob(job);
                     setShowFullDescription(false);
                   }}
                 >
                   <h3 className="text-lg font-medium">{job.job_title}</h3>
-                  <p className="text-sm text-gray-600">{job.employer_name} – {job.job_city}</p>
-                  {job.job_description && <p className="text-sm text-gray-500 line-clamp-2 mt-1">{job.job_description.slice(0, 100)}...</p>}
+                  <p className="text-sm text-gray-600">
+                    {job.employer_name} – {job.job_city}
+                  </p>
+                  {job.job_description && (
+                    <p className="text-sm text-gray-500 line-clamp-2 mt-1">
+                      {job.job_description.slice(0, 100)}...
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
@@ -179,15 +238,3 @@ function Recommendation() {
 }
 
 export default Recommendation;
-
-
-
-
-
-
-
-
-
-
-
-
