@@ -10,6 +10,7 @@ interface Job {
   job_id: string;
   job_title: string;
   employer_name: string;
+  employment_type?: string;
   employer_logo?: string;
   job_city: string;
   job_state?: string;
@@ -24,10 +25,12 @@ interface Job {
   job_max_salary?: number;
   job_salary_currency?: string;
   job_posted_at?: string;
+  job_posted_at2?: string;
   salary?: string;
   qualifications?: string;
   experience?: string;
   skills?: string[];
+  job_google_link?: string;
 }
 
 function Recommendation() {
@@ -113,7 +116,8 @@ function Recommendation() {
                   </div>
 
                   <p className="text-sm text-gray-700 mb-1">
-                    🧾 <strong>Type:</strong> {selectedJob.job_type}
+                    🧾 <strong>Type:</strong>{" "}
+                    {selectedJob.employment_type || selectedJob.job_type}
                   </p>
                   <p className="text-sm text-gray-700 mb-1">
                     🏡 <strong>Remote:</strong>{" "}
@@ -135,8 +139,15 @@ function Recommendation() {
 
                   {selectedJob.job_posted_at && (
                     <p className="text-sm text-gray-500 mb-1">
-                      📅 <strong>Posted:</strong>{" "}
+                      📅 <strong>Posted (formatted):</strong>{" "}
                       {new Date(selectedJob.job_posted_at).toLocaleDateString()}
+                    </p>
+                  )}
+
+                  {selectedJob.job_posted_at2 && (
+                    <p className="text-sm text-gray-500 mb-1">
+                      🕒 <strong>Posted (raw):</strong>{" "}
+                      {selectedJob.job_posted_at2}
                     </p>
                   )}
 
@@ -192,6 +203,17 @@ function Recommendation() {
                       Apply Now
                     </a>
 
+                    {selectedJob.job_google_link && (
+                      <a
+                        href={selectedJob.job_google_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-purple-600 hover:underline"
+                      >
+                        View on Google
+                      </a>
+                    )}
+
                     <button
                       onClick={() => handleSaveJob(selectedJob)}
                       className="text-white bg-green-600 hover:bg-green-700 px-3 py-1 rounded"
@@ -225,6 +247,11 @@ function Recommendation() {
                   {job.job_description && (
                     <p className="text-sm text-gray-500 line-clamp-2 mt-1">
                       {job.job_description.slice(0, 100)}...
+                    </p>
+                  )}
+                  {job.job_posted_at2 && (
+                    <p className="text-xs text-gray-400 mt-1">
+                      🕒 Posted: {job.job_posted_at2}
                     </p>
                   )}
                 </div>
