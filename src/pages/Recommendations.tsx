@@ -74,7 +74,7 @@ function Recommendation() {
     <>
       <Navbar />
       <div className="min-h-screen bg-gray-100 p-6">
-        <h1 className="text-3xl font-bold mb-4 text-center text-blue-600">
+        <h1 className="text-3xl font-bold mb-4 text-center text-[#6D2764]">
           Job Recommendations
         </h1>
 
@@ -216,7 +216,7 @@ function Recommendation() {
 
                     <button
                       onClick={() => handleSaveJob(selectedJob)}
-                      className="text-white bg-green-600 hover:bg-green-700 px-3 py-1 rounded"
+                      className="text-white bg-[#6D2764] hover:bg-[#6D2764] px-3 py-1 rounded"
                     >
                       Save Job
                     </button>

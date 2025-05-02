@@ -69,3 +69,5 @@ export async function fetchJobs(query: string) {
 
 
 
+
+

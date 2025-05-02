@@ -32,7 +32,7 @@ export function JobSearchForm({ onSearch }: Props) {
         className="p-2 border rounded w-full md:w-1/3"
         required
       />
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+      <button type="submit" className="bg-[#6D2764] text-white px-4 py-2 rounded">
         Search
       </button>
     </form>

@@ -1,21 +1,25 @@
+// src/components/Navbar.tsx
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { auth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import ProfileImage from "./Profile";
-import ProfileSidebar from "./ProfileSidebar"; // ✅ New sidebar component
+import ProfileSidebar from "./ProfileSidebar";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [username, setUsername] = useState<string>("");
-  const [showSidebar, setShowSidebar] = useState(false); // ✅ Sidebar toggle
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [photoURL, setPhotoURL] = useState<string | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUsername(user.displayName || "Guest");
+        setPhotoURL(user.photoURL);
       } else {
         setUsername("Guest");
+        setPhotoURL(null);
       }
     });
 
@@ -29,14 +33,12 @@ function Navbar() {
       <nav className="bg-[#6D2764] shadow-md relative z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
-            {/* Logo */}
             <div className="flex-shrink-0">
               <Link to="/" className="text-2xl font-bold text-white">
                 AI Jobs
               </Link>
             </div>
 
-            {/* Desktop Menu */}
             <div className="hidden md:flex space-x-8 items-center">
               <Link to="/home" className="text-white hover:text-green-600 font-medium">Home</Link>
               <Link to="/find-jobs" className="text-white hover:text-green-600 font-medium">Find Jobs</Link>
@@ -44,7 +46,7 @@ function Navbar() {
 
               {/* Profile Image with click */}
               <div className="ml-4 cursor-pointer" onClick={toggleSidebar}>
-                <ProfileImage username={username} />
+                <ProfileImage username={username} photoURL={photoURL} />
               </div>
             </div>
 
@@ -62,7 +64,6 @@ function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu Dropdown */}
         {isOpen && (
           <div className="md:hidden bg-white shadow-md">
             <div className="flex flex-col space-y-2 py-4 px-6">
@@ -74,9 +75,13 @@ function Navbar() {
         )}
       </nav>
 
-      {/* Sidebar */}
       {showSidebar && (
-        <ProfileSidebar username={username} onClose={toggleSidebar} />
+        <ProfileSidebar
+          username={username}
+          photoURL={photoURL}
+          onClose={toggleSidebar}
+          onPhotoChange={setPhotoURL} // Pass down photo updater
+        />
       )}
     </>
   );

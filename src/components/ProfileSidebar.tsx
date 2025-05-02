@@ -1,17 +1,43 @@
 // src/components/ProfileSidebar.tsx
-import React from "react";
+import React, { useRef, useState } from "react";
 import { auth } from "../firebase";
-import { signOut } from "firebase/auth";
+import { signOut, updateProfile } from "firebase/auth";
+import { uploadProfileImage } from "../utils/uploadProfileImage";
 
 interface Props {
   username: string;
+  photoURL: string | null;
   onClose: () => void;
+  onPhotoChange: (newURL: string) => void;
 }
 
-const ProfileSidebar: React.FC<Props> = ({ username, onClose }) => {
+const ProfileSidebar: React.FC<Props> = ({ username, photoURL, onClose, onPhotoChange }) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
+
   const handleLogout = async () => {
     await signOut(auth);
-    onClose(); // Close panel after logout
+    onClose();
+  };
+
+  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !auth.currentUser) return;
+
+    setIsUploading(true);
+    try {
+      const downloadURL = await uploadProfileImage(file, auth.currentUser.uid);
+
+      await updateProfile(auth.currentUser, {
+        photoURL: downloadURL,
+      });
+
+      onPhotoChange(downloadURL);
+    } catch (error) {
+      console.error("Image upload failed:", error);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -22,13 +48,34 @@ const ProfileSidebar: React.FC<Props> = ({ username, onClose }) => {
       </div>
 
       <div className="p-4 space-y-4">
-        {/* User Info */}
-        <div className="bg-gray-100 p-4 rounded">
+        {/* Profile Image */}
+        <div className="flex justify-center">
+          <div className="relative cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+            {photoURL ? (
+              <img src={photoURL} alt="Profile" className="w-24 h-24 rounded-full object-cover border" />
+            ) : (
+              <div className="bg-[#6D2764] text-white w-24 h-24 rounded-full flex items-center justify-center font-bold text-2xl">
+                {username.charAt(0).toUpperCase()}
+              </div>
+            )}
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleImageChange}
+              className="hidden"
+              accept="image/*"
+            />
+            {isUploading && <p className="text-center text-sm text-gray-500">Uploading...</p>}
+          </div>
+        </div>
+
+        {/* Username */}
+        <div className="bg-gray-100 p-4 rounded text-center">
           <p className="font-medium text-gray-800">User:</p>
           <p>{username}</p>
         </div>
 
-        {/* Account Settings */}
+        {/* Settings */}
         <div>
           <h3 className="font-semibold text-gray-700 mb-2">Settings</h3>
           <ul className="space-y-2 text-sm">

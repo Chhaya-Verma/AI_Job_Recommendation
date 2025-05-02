@@ -17,7 +17,8 @@ function Home() {
         className="min-h-screen bg-cover bg-center flex flex-col items-center justify-center text-white"
         style={{
           backgroundImage:
-            "url('https://media.istockphoto.com/id/1366137792/photo/business-persons-on-meeting-in-the-office.jpg?s=612x612&w=0&k=20&c=0ya-nb5-ksH44xHreYxOOva9Hku1xcA7LtbfTxeSzNE=')",
+            // "url('https://media.istockphoto.com/id/1366137792/photo/business-persons-on-meeting-in-the-office.jpg?s=612x612&w=0&k=20&c=0ya-nb5-ksH44xHreYxOOva9Hku1xcA7LtbfTxeSzNE=')",
+            "url('https://img.freepik.com/free-photo/beautiful-young-woman-home-office-working-from-home-teleworking-concept_144627-46786.jpg')",
         }}
       >
         <div className="bg-opacity-50 p-8 rounded-lg text-center">
