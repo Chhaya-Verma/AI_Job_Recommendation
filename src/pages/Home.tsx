@@ -1,38 +1,104 @@
-// src/Home.tsx
+// import { useNavigate } from "react-router-dom";
+// import Navbar from "../components/Navbar";
+
+// function Home() {
+//   const navigate = useNavigate();
+
+//   const handleFindJobs = () => {
+//     navigate("/find-jobs");
+//   };
+
+//   return (
+//     <>
+//       <Navbar />
+//       {/* Background Image Wrapper */}
+//       <div
+//         className="min-h-screen bg-cover bg-center flex"
+//         style={{
+//           backgroundImage:
+//             "url('https://img.freepik.com/free-photo/beautiful-young-woman-home-office-working-from-home-teleworking-concept_144627-46786.jpg')",
+//         }}
+//       >
+//         {/* Left Side Overlay with Half-Oval Shape */}
+//         <div
+//   className="w-full md:w-1/2 flex flex-col justify-center items-start p-10 text-white"
+//   style={{
+//     backgroundColor: "rgba(109, 39, 100, 0.7)",
+//     clipPath: "ellipse(100% 100% at 0% 50%)", // Half-oval effect
+//   }}
+// >
+//   <h1 className="text-4xl md:text-5xl font-bold mb-6">
+//     AI Job Recommendation
+//   </h1>
+//   <p className="text-lg md:text-xl font-medium mb-8 max-w-md">
+//     Find the best job recommendations powered by AI, just for you.
+//   </p>
+//   <button
+//     onClick={handleFindJobs}
+//     className="bg-white text-[#6D2764] hover:bg-green-600 hover:text-white font-semibold py-3 px-6 rounded-lg transition"
+//   >
+//     Find Jobs
+//   </button>
+// </div>
+
+
+//         {/* Right side stays blank, shows image only */}
+//         <div className="hidden md:block md:w-1/2"></div>
+//       </div>
+//     </>
+//   );
+// }
+
+// export default Home;
+
+
 
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import aifrontpage from "../assets/aifrontpage.png"; 
 
 function Home() {
   const navigate = useNavigate();
 
   const handleFindJobs = () => {
-    navigate("/find-jobs"); // This will navigate to the Recommendation page
+    navigate("/find-jobs");
   };
 
   return (
     <>
       <Navbar />
+      {/* Background Image Wrapper */}
       <div
-        className="min-h-screen bg-cover bg-center flex flex-col items-center justify-center text-white"
+        className="min-h-screen bg-cover bg-center flex"
         style={{
-          backgroundImage:
-            // "url('https://media.istockphoto.com/id/1366137792/photo/business-persons-on-meeting-in-the-office.jpg?s=612x612&w=0&k=20&c=0ya-nb5-ksH44xHreYxOOva9Hku1xcA7LtbfTxeSzNE=')",
-            "url('https://img.freepik.com/free-photo/beautiful-young-woman-home-office-working-from-home-teleworking-concept_144627-46786.jpg')",
+            backgroundImage: `url(${aifrontpage})`
         }}
       >
-        <div className="bg-opacity-50 p-8 rounded-lg text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">AI Job Recommendation</h1>
-          <p className="text-lg md:text-xl mb-8">
-            Find the best job recommendations powered by AI, just for you.
-          </p>
-          <button
-            onClick={handleFindJobs} // Navigate to /find-jobs route
-            className="bg-[#6D2764] hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition"
-          >
-            Find Jobs
-          </button>
-        </div>
+        {/* Left Side Overlay with Half-Oval Shape */}
+        <div
+  className="w-full md:w-1/2 flex flex-col justify-center items-start p-10 text-white"
+  style={{
+    backgroundColor: "rgba(109, 39, 100, 0.7)",
+    clipPath: "ellipse(100% 100% at 0% 50%)", // Half-oval effect
+  }}
+>
+  <h1 className="text-4xl md:text-5xl font-bold mb-6">
+    AI Job Recommendation
+  </h1>
+  <p className="text-lg md:text-xl font-medium mb-8 max-w-md">
+    Find the best job recommendations powered by AI, just for you.
+  </p>
+  <button
+    onClick={handleFindJobs}
+    className="bg-white text-[#6D2764] hover:bg-green-600 hover:text-white font-semibold py-3 px-6 rounded-lg transition"
+  >
+    Find Jobs
+  </button>
+</div>
+
+
+        {/* Right side stays blank, shows image only */}
+        <div className="hidden md:block md:w-1/2"></div>
       </div>
     </>
   );
