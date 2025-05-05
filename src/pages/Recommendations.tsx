@@ -1,4 +1,4 @@
-/////////////////////// for the firestone ////////////////////
+/////////////////////// for the ui-enhancement////////////////////
 import { useEffect, useState } from "react";
 import { JobSearchForm } from "../components/JobSearchForm";
 import Navbar from "../components/Navbar";
@@ -72,13 +72,30 @@ function Recommendation() {
 
   return (
     <>
-      <Navbar />
+      <div className="bg-[#6D2764]">
+        {/* Navbar full width */}
+        <div className="w-full">
+          <Navbar />
+        </div>
+
+        {/* Main content section */}
+        <div className="text-center text-white py-8">
+          <h1 className="text-4xl font-bold mb-4">
+            Find Your Dream Job
+          </h1>
+          <p className="text-lg mb-8">
+            Start your job search today with the best AI-powered recommendations tailored to your skills and interests.
+          </p>
+          {/* Job search input field inside same div */}
+          <JobSearchForm onSearch={setQuery} />
+        </div>
+      </div>
+
+      {/* Job Recommendations Section */}
       <div className="min-h-screen bg-gray-100 p-6">
         <h1 className="text-3xl font-bold mb-4 text-center text-[#6D2764]">
           Job Recommendations
         </h1>
-
-        <JobSearchForm onSearch={setQuery} />
 
         {loading && (
           <p className="text-center text-gray-500 mt-4">Loading jobs...</p>
@@ -88,6 +105,9 @@ function Recommendation() {
           <p className="text-center text-gray-500 mt-4">
             No jobs found. Try another search.
           </p>
+
+
+          
         )}
 
         {!loading && jobs.length > 0 && (
