@@ -4,6 +4,9 @@ import Navbar from "../components/Navbar";
 import { fetchJobs } from "../api/fetchJobs";
 import { auth, db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import Toast CSS
+
 
 interface Job {
   job_id: string;
@@ -54,7 +57,7 @@ function Recommendation() {
   const handleSaveJob = async (job: Job) => {
     const user = auth.currentUser;
     if (!user) {
-      alert("Please login to save jobs.");
+      toast.error("Please login to save jobs.");
       return;
     }
 
@@ -62,15 +65,16 @@ function Recommendation() {
       await setDoc(doc(db, "users", user.uid, "savedJobs", job.job_id), {
         ...job,
       });
-      alert("Job saved successfully!");
+      toast.success("Job saved successfully!");
     } catch (error) {
       console.error("Error saving job:", error);
-      alert("Failed to save job.");
+      toast.error("Failed to save job.");
     }
   };
 
   return (
     <>
+        <ToastContainer />
       {/* Header Section */}
       <div className="bg-[#6D2764]">
         <div className="w-full">
@@ -78,10 +82,9 @@ function Recommendation() {
         </div>
 
         <div className="text-center text-white py-8">
-          <h1 className="text-4xl font-bold mb-4">Find Your Dream Job</h1>
+          <h1 className="text-4xl font-bold mb-4">𝑫𝒊𝒔𝒄𝒐𝒗𝒆𝒓 𝑶𝒑𝒑𝒐𝒓𝒕𝒖𝒏𝒊𝒕𝒊𝒆𝒔 𝑻𝒉𝒂𝒕 𝑴𝒂𝒕𝒄𝒉 𝒀𝒐𝒖𝒓 𝑷𝒂𝒔𝒔𝒊𝒐𝒏</h1>
           <p className="text-lg mb-8">
-            Start your job search today with the best AI-powered recommendations
-            tailored to your skills and interests.
+          ꜱᴛᴀʀᴛ ʏᴏᴜʀ ᴊᴏʙ ꜱᴇᴀʀᴄʜ ᴛᴏᴅᴀʏ ᴡɪᴛʜ ᴛʜᴇ ʙᴇꜱᴛ ᴀɪ-ᴘᴏᴡᴇʀᴇᴅ ʀᴇᴄᴏᴍᴍᴇɴᴅᴀᴛɪᴏɴꜱ             ᴛᴀɪʟᴏʀᴇᴅ ᴛᴏ ʏᴏᴜʀ ꜱᴋɪʟʟꜱ ᴀɴᴅ ɪɴᴛᴇʀᴇꜱᴛꜱ.
           </p>
           <JobSearchForm onSearch={setQuery} />
         </div>
@@ -90,7 +93,7 @@ function Recommendation() {
       {/* Popular Searches */}
       <div className="mt-10">
         <h2 className="text-xl font-semibold text-center text-[#6D2764] mb-4">
-          Popular Searches
+        𝐏𝐨𝐩𝐮𝐥𝐚𝐫 𝐒𝐞𝐚𝐫𝐜𝐡𝐞𝐬
         </h2>
         <div className="flex flex-wrap justify-center gap-3">
           {[
@@ -313,11 +316,6 @@ function Recommendation() {
 }
 
 export default Recommendation;
-
-
-
-
-
 
 
 
