@@ -266,7 +266,6 @@
 
 // export default Recommendation;
 
-
 /////////////////////// for the ui-enhancement////////////////////
 import { useEffect, useState } from "react";
 import { JobSearchForm } from "../components/JobSearchForm";
@@ -349,11 +348,10 @@ function Recommendation() {
 
         {/* Main content section */}
         <div className="text-center text-white py-8">
-          <h1 className="text-4xl font-bold mb-4">
-            Find Your Dream Job
-          </h1>
+          <h1 className="text-4xl font-bold mb-4">Find Your Dream Job</h1>
           <p className="text-lg mb-8">
-            Start your job search today with the best AI-powered recommendations tailored to your skills and interests.
+            Start your job search today with the best AI-powered recommendations
+            tailored to your skills and interests.
           </p>
           {/* Job search input field inside same div */}
           <JobSearchForm onSearch={setQuery} />
@@ -370,35 +368,45 @@ function Recommendation() {
           <p className="text-center text-gray-500 mt-4">Loading jobs...</p>
         )}
 
-{!loading && jobs.length === 0 && (
-  <>
-    <p className="text-center text-gray-500 mt-4">
-      No jobs found. Try another search.
-    </p>
+        {!loading && jobs.length === 0 && (
+          <>
+            <p className="text-center text-gray-500 mt-4">
+              No jobs found. Try another search. let' see some Popular Searches
+            </p>
 
-    {/* Popular Searches Section */}
-    <div className="mt-10">
-      <h2 className="text-xl font-semibold text-center text-[#6D2764] mb-4">
-        Popular Searches
-      </h2>
-      <div className="flex flex-wrap justify-center gap-3">
-        {["Frontend Developer", "Data Analyst", "React", "Python", "Remote", "Marketing", "AI Engineer", "Java", "Product Manager", "UI/UX Designer"].map((term) => (
-          <button
-            key={term}
-            onClick={() => setQuery(term)}
-            className="bg-white text-[#6D2764] border border-[#6D2764] px-4 py-2 rounded-full hover:bg-[#6D2764] hover:text-white transition"
-          >
-            {term}
-          </button>
-        ))}
-      </div>
-    </div>
-  </>
-)}
-
+            {/* Popular Searches Section */}
+            <div className="mt-10">
+              <h2 className="text-xl font-semibold text-center text-[#6D2764] mb-4">
+                Popular Searches
+              </h2>
+              <div className="flex flex-wrap justify-center gap-3">
+                {[
+                  "Frontend Developer",
+                  "Data Analyst",
+                  "React",
+                  "Python",
+                  "Remote",
+                  "Marketing",
+                  "AI Engineer",
+                  "Java",
+                  "Product Manager",
+                  "UI/UX Designer",
+                ].map((term) => (
+                  <button
+                    key={term}
+                    onClick={() => setQuery(term)}
+                    className="bg-white text-[#6D2764] border border-[#6D2764] px-4 py-2 rounded-full hover:bg-[#6D2764] hover:text-white transition"
+                  >
+                    {term}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
 
         {!loading && jobs.length > 0 && (
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 px-4 md:px-25">
             {/* Left side: Detailed Job View */}
             <div className="md:col-span-2 bg-white p-4 rounded shadow">
               {selectedJob && (
