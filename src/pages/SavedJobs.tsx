@@ -6,6 +6,9 @@ import Navbar from "../components/Navbar";
 import { FiTrash2 } from "react-icons/fi"; // For delete icon
 import { MdCancel } from "react-icons/md"; // For confirmation cancel icon
 import { IoCheckmarkCircleSharp } from "react-icons/io5"; // For confirmation icon
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import Toast CSS
+
 
 interface Job {
   id: string;
@@ -57,30 +60,40 @@ function SavedJobs() {
   const handleDelete = async (jobId: string) => {
     if (!userId) return;
 
-    // Proceed with deletion
-    await deleteDoc(doc(db, "users", userId, "savedJobs", jobId));
-    setSavedJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId));
-    setShowConfirmation(null); // Hide confirmation modal after deletion
+    try {
+      // Proceed with deletion
+      await deleteDoc(doc(db, "users", userId, "savedJobs", jobId));
+      setSavedJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId));
+      setShowConfirmation(null); // Hide confirmation modal after deletion
+      toast.success("Job removed successfully!"); // Toast notification on success
+    } catch (error) {
+      toast.error("Failed to remove job."); // Toast notification on error
+    }
   };
 
   return (
     <>
+        <ToastContainer />
       <Navbar />
       <div className="min-h-screen bg-gray-100 p-6">
-        <h1 className="text-3xl font-bold text-center text-[#6D2764] mb-6">Saved Jobs</h1>
+        <h1 className="text-3xl font-bold text-center text-[#6D2764] mb-6">
+          Saved Jobs
+        </h1>
 
         {loading ? (
           <p className="text-center text-gray-600">Loading...</p>
         ) : savedJobs.length === 0 ? (
           <p className="text-center text-gray-500">No saved jobs found.</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 md:px-25">
             {savedJobs.map((job) => (
               <div
                 key={job.id}
                 className="bg-white p-6 rounded-lg shadow-md border hover:shadow-xl transition duration-300"
               >
-                <h2 className="text-lg font-semibold text-[#6D2764]">{job.job_title}</h2>
+                <h2 className="text-lg font-semibold text-[#6D2764]">
+                  {job.job_title}
+                </h2>
                 <p className="text-gray-600 mb-2">
                   {job.employer_name} – {job.job_city}
                 </p>
@@ -106,33 +119,34 @@ function SavedJobs() {
 
                 {/* Confirmation modal */}
                 {showConfirmation === job.id && (
-  <>
-    {/* Just blur, no black background */}
-    <div className="fixed inset-0 backdrop-blur-md z-40" />
+                  <>
+                    {/* Just blur, no black background */}
+                    <div className="fixed inset-0 backdrop-blur-md z-40" />
 
-    <div className="fixed inset-0 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-md w-80 text-center">
-        <IoCheckmarkCircleSharp className="text-4xl text-green-500 mx-auto mb-4" />
-        <p className="mb-4 text-lg">Are you sure you want to remove this job?</p>
-        <div className="flex justify-center gap-4">
-          <button
-            onClick={() => handleDelete(job.id)}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
-          >
-            Yes, Remove
-          </button>
-          <button
-            onClick={() => setShowConfirmation(null)}
-            className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition flex items-center gap-1"
-          >
-            <MdCancel className="text-xl" /> Cancel
-          </button>
-        </div>
-      </div>
-    </div>
-  </>
-)}
-
+                    <div className="fixed inset-0 flex items-center justify-center z-50">
+                      <div className="bg-white p-6 rounded-lg shadow-md w-80 text-center">
+                        <IoCheckmarkCircleSharp className="text-4xl text-green-500 mx-auto mb-4" />
+                        <p className="mb-4 text-lg">
+                          Are you sure you want to remove this job?
+                        </p>
+                        <div className="flex justify-center gap-4">
+                          <button
+                            onClick={() => handleDelete(job.id)}
+                            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+                          >
+                            Yes, Remove
+                          </button>
+                          <button
+                            onClick={() => setShowConfirmation(null)}
+                            className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition flex items-center gap-1"
+                          >
+                            <MdCancel className="text-xl" /> Cancel
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             ))}
           </div>
