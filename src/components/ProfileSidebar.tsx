@@ -41,7 +41,7 @@ const ProfileSidebar: React.FC<Props> = ({ username, photoURL, onClose, onPhotoC
   };
 
   return (
-    <div className="fixed top-0 right-0 h-full w-72 bg-white shadow-lg z-50 transform transition-transform duration-300">
+    <div className="fixed top-4 right-4 w-72 bg-white shadow-xl z-50 rounded-lg transition-transform duration-300 max-h-[90vh] overflow-y-auto">
       <div className="flex justify-between items-center p-4 border-b">
         <h2 className="text-xl font-semibold">Account</h2>
         <button onClick={onClose} className="text-gray-600 text-lg">✕</button>
