@@ -75,14 +75,8 @@ const ProfileSidebar: React.FC<Props> = ({ username, photoURL, onClose, onPhotoC
           <p>{username}</p>
         </div>
 
-        {/* Settings */}
-        <div>
-          <h3 className="font-semibold text-gray-700 mb-2">Settings</h3>
-          <ul className="space-y-2 text-sm">
-            <li><button className="hover:text-green-600">Account Settings</button></li>
-            <li><button className="hover:text-green-600">Theme / Preferences</button></li>
-          </ul>
-        </div>
+      
+        
 
         {/* Logout */}
         <button
