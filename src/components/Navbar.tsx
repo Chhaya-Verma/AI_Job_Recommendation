@@ -33,43 +33,93 @@ function Navbar() {
       <nav className="bg-[#6D2764] shadow-md relative z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
+            {/* Logo */}
             <div className="flex-shrink-0">
               <Link to="/" className="text-2xl font-bold text-white">
-                AI Jobs
+                ѕкιℓℓмαт¢ня
               </Link>
             </div>
 
+            {/* Desktop Nav */}
             <div className="hidden md:flex space-x-8 items-center">
-              <Link to="/home" className="text-white hover:text-green-600 font-medium">Home</Link>
-              <Link to="/find-jobs" className="text-white hover:text-green-600 font-medium">Find Jobs</Link>
-              <Link to="/saved-jobs" className="text-white hover:text-green-600 font-medium">Saved Jobs</Link>
+              <Link
+                to="/home"
+                className="text-white hover:text-[#4A1845] font-medium"
+              >
+                Home
+              </Link>
+              <Link
+                to="/find-jobs"
+                className="text-white hover:text-[#4A1845] font-medium"
+              >
+                Find Jobs
+              </Link>
+              <Link
+                to="/saved-jobs"
+                className="text-white hover:text-[#4A1845] font-medium"
+              >
+                Saved Jobs
+              </Link>
 
-              {/* Profile Image with click */}
+              {/* Profile Image */}
               <div className="ml-4 cursor-pointer" onClick={toggleSidebar}>
                 <ProfileImage username={username} photoURL={photoURL} />
               </div>
             </div>
 
-            {/* Mobile Menu Toggle */}
-            <div className="md:hidden">
+            {/* Mobile Nav */}
+            <div className="md:hidden flex items-center space-x-3">
+              {/* Profile image to the LEFT of hamburger on mobile */}
+              <div className="cursor-pointer" onClick={toggleSidebar}>
+                <ProfileImage username={username} photoURL={photoURL} />
+              </div>
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-gray-200 hover:text-green-400 focus:outline-none"
+                className="text-gray-200 hover:text-[#4A1845] focus:outline-none"
               >
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               </button>
             </div>
           </div>
         </div>
 
+        {/* Mobile Dropdown */}
         {isOpen && (
           <div className="md:hidden bg-white shadow-md">
             <div className="flex flex-col space-y-2 py-4 px-6">
-              <Link to="/home" onClick={() => setIsOpen(false)} className="text-gray-700 hover:text-green-600">Home</Link>
-              <Link to="/find-jobs" onClick={() => setIsOpen(false)} className="text-gray-700 hover:text-green-600">Find Jobs</Link>
-              <Link to="/saved-jobs" onClick={() => setIsOpen(false)} className="text-gray-700 hover:text-green-600">Saved Jobs</Link>
+              <Link
+                to="/home"
+                onClick={() => setIsOpen(false)}
+                className="text-gray-700 hover:text-[#4A1845] font-bold"
+              >
+                Home
+              </Link>
+              <Link
+                to="/find-jobs"
+                onClick={() => setIsOpen(false)}
+                className="text-gray-700 hover:text-[#4A1845] font-bold"
+              >
+                Find Jobs
+              </Link>
+              <Link
+                to="/saved-jobs"
+                onClick={() => setIsOpen(false)}
+                className="text-gray-700 hover:text-[#4A1845] font-bold"
+              >
+                Saved Jobs
+              </Link>
             </div>
           </div>
         )}
@@ -80,7 +130,7 @@ function Navbar() {
           username={username}
           photoURL={photoURL}
           onClose={toggleSidebar}
-          onPhotoChange={setPhotoURL} // Pass down photo updater
+          onPhotoChange={setPhotoURL}
         />
       )}
     </>
